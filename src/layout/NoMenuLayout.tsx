@@ -12,14 +12,14 @@ import Routers from '../routers';
 const { Header, Content, Footer } = Layout;
 
 
-const NoMenuLayout: FC = (props: any) => {
+const NoMenuLayout = (props: any) => {
   return (
     <div className="App">
       <Router>
         <Layout style={{ minHeight: '100vh' }}>
           <Layout className="site-layout">
             <Header className="site-layout-background" style={{ padding: 0, textAlign: 'center', fontWeight: 700, fontSize: 24 }} >
-              高光时刻，从头做起
+            美不止一刻
             </Header>
             <Content style={{ margin: '0 16px' }}>
               <div className="site-layout-background" style={{ padding: 24, minHeight: 360, marginTop: 15 }}>

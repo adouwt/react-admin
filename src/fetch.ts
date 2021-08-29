@@ -1,4 +1,5 @@
 import QS from 'qs'
+import { message } from 'antd'
 
 export enum ContentType {
     json = 'application/json;charset=UTF-8',
@@ -25,7 +26,7 @@ export interface IHeader {
     [propsName: string]: any
 }
 
-export const baseUrl: string = 'http://localhost:4000/';
+export const baseUrl: string = '/';
 
 const httpRequest = async (url: string, config: IReqConfig,) => {
     let promise: Response
@@ -50,6 +51,7 @@ const httpRequest = async (url: string, config: IReqConfig,) => {
             headers
         })
     } else if(config.method === HttpMethod.post) {
+        debugger
         promise = await fetch(reqUrl, {
             body: QS.stringify(config.body),
             headers,
@@ -65,11 +67,14 @@ const httpRequest = async (url: string, config: IReqConfig,) => {
     return handleRes(promise)
 }
 
-const handleRes = async (res: Response) => {
+const handleRes = async (res: any) => {
     const parsedRes = await parseRes(res);
     if(res.ok) {
+        if(!parsedRes.success) {
+            message.error(parsedRes.message)
+        }
         return parsedRes
-    } 
+    }
     const error =  parsedRes
     throw error
 }

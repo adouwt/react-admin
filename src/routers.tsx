@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
 import {
-  BrowserRouter as Router,
   Switch,
   Route,
   Redirect
@@ -11,7 +10,7 @@ import Statistics from './pages/statistics';
 import Users from './pages/users';
 
 
-const Routers: FC = (props: any) => {
+const Routers = () => {
   return (
     <Switch>
         <Route path="/statistics" exact>

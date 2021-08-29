@@ -12,7 +12,7 @@ const noMenuRoute = [
   '/users', '/login', '/register'
 ]
 
-const App: FC = (props: any) => {
+const App = (props: any) => {
   return (
     <div className="App">
       <Router>

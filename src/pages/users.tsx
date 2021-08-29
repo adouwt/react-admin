@@ -1,18 +1,53 @@
-import React, { FC, useEffect, useState } from 'react';
-import { Card, Space, Rate, Popover, Button  } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Card, Space, Rate, Popover, Button, message } from 'antd';
 
-import httpRequest from '../fetch';
-const Users: FC =   () => {
+import httpRequest from '../utils/axios';
+interface IUserItem {  
+    _id?: string | undefined
+    avatar_url?: string
+    age?: string
+    name?: string
+    price?: string
+    rate?: number
+    user_desc?: string
+}
+
+
+const Users =  () => {
     const [userList, setUserList] = useState([]);
     useEffect(() => {
-        let response:any = httpRequest('alluser', {});
-        // console.log(response)
+        alluserandrate();
     }, [])
-    const RateContent = (id: string) => {
+    const alluserandrate = () => {
+        let response:any = httpRequest('get/alluserandrate', {});
+            response.then((res: any) => {
+                console.log(res);
+                setUserList(res.users);
+            }, (err: any) => {
+                console.log(err, 'err')
+            })
+    }
+    const onChange = (id:string | undefined, value: number) => {
+        console.log(id, value)
+        httpRequest({
+            url: 'post/oneUserRate',
+            method: 'post',
+            data: {
+                id: id,
+                rate: value
+            }
+        }).then((res:any) => {
+            if(res.success) {
+                // message.success(res.message)
+                message.success(`感谢您的${value}分的评分，欢迎下次再来`);
+                alluserandrate();
+            }
+        })
+    }
+
+    const RateContent = (id: string | undefined) => {
         return (<Popover
-            content={<Rate allowHalf defaultValue={4}  onChange={(value: number) => {
-                console.log(id, value)
-            }}/> }
+            content={<Rate allowHalf defaultValue={4}  onChange={(value:number) => onChange(id, value)}/> }
             title="打个星呗！"
             trigger="click"
         >
@@ -22,55 +57,25 @@ const Users: FC =   () => {
     return (
         <div className="users">
             <Space direction="vertical">
-                <Card title="1号Tony" bordered={true} extra={RateContent('1')}>
-                    <div className="card-inner-wrapper">
-                        <div>
-                            <img src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" width={"90%"} alt="1"/>
-                        </div>
-                        <div>
-                            <h2>姓名：Tony</h2>
-                            <h2>性别：男</h2>
-                            <h2>工龄：3 年</h2>
-                            <h2>价格：30 RMB</h2>
-                            <h2>推荐指数：<Rate allowHalf defaultValue={4.5} disabled /></h2>
-                            <p>个人简介：</p>
-                            <p>人见人爱的Tony 老师，专治各种疑难杂症</p>
-                        </div>
-                    </div>
-                    
-                </Card>
-                <Card title="2号Allen" bordered={true} extra={RateContent('2')} >
-                    <div className="card-inner-wrapper">
-                        <div>
-                            <img src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" width={"90%"} alt="1"/>
-                        </div>
-                        <div>
-                            <h2>姓名：Allen</h2>
-                            <h2>性别：女</h2>
-                            <h2>工龄：3 年</h2>
-                            <h2>价格：30 RMB</h2>
-                            <h2>推荐指数：<Rate allowHalf defaultValue={4.5} disabled /></h2>
-                            <p>个人简介：</p>
-                            <p>花见花开的Allen 老师，专治各种疑难杂症</p>
-                        </div>
-                    </div>
-                </Card>
-                <Card title="3号Berry" bordered={true} extra={RateContent('3')}>
-                    <div className="card-inner-wrapper">
-                        <div>
-                            <img src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" width={"90%"} alt="1"/>
-                        </div>
-                        <div>
-                            <h2>姓名：Berry</h2>
-                            <h2>性别：女</h2>
-                            <h2>工龄：3 年</h2>
-                            <h2>价格：30 RMB</h2>
-                            <h2>推荐指数：<Rate allowHalf defaultValue={4.5} disabled /></h2>
-                            <p>个人简介：</p>
-                            <p>超人气偶像的Berry 老师，师奶杀手</p>
-                        </div>
-                    </div>
-                </Card>
+                {userList.map((item:IUserItem, index:number) => {
+                    return (
+                        <Card  key={index} title={index+1 + '号老师'} bordered={true} extra={RateContent(item._id)}>
+                            <div className="card-inner-wrapper">
+                                <div>
+                                    <img src={item.avatar_url} width={"90%"} alt="1"/>
+                                </div>
+                                <div>
+                                    <h2>姓名：{item.name}</h2>
+                                    <h2>工龄：{item.age} 年</h2>
+                                    <h2>价格：{item.price} RMB</h2>
+                                    <h2>推荐指数：<Rate allowHalf defaultValue={item.rate} disabled /></h2>
+                                    <p>个人简介：</p>
+                                    <p>{item.user_desc}</p>
+                                </div>
+                            </div>
+                        </Card>
+                    )
+                })}
             </Space>
         </div>
     );

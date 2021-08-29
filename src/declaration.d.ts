@@ -1,0 +1,5 @@
+declare module 'react/jsx-runtime'
+declare module 'react-router-dom'
+declare module 'react'
+declare module 'antd'
+declare module '@ant-design/icons'

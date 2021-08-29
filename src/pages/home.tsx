@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 
-const Home: FC = () => (
+const Home = () => (
     <div className="home">
         <h2>home page</h2>
     </div>
