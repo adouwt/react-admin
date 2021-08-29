@@ -1,5 +1,7 @@
+@import '~antd/dist/antd.css';
+/* @ 当前目录 ～项目根目录 */
 .App {
-  text-align: center;
+  /* text-align: center; */
 }
 
 .App-logo {
@@ -35,4 +37,31 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.logo {
+  height: 32px;
+  margin: 16px;
+  background: rgba(255, 255, 255, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+}
+
+.site-layout .site-layout-background {
+  background: #fff;
+}
+
+.card-inner-wrapper {
+  display: flex;
+}
+.card-inner-wrapper>div:nth-child(1) {
+  flex: 1;
+}
+.card-inner-wrapper>div:nth-child(2) {
+  flex: 2;
+}
+.users {
+  background-image: url('assets/bg.jpeg');
 }

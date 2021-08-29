@@ -1,24 +1,25 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { FC } from 'react';
+import {
+  BrowserRouter as Router,
+} from "react-router-dom";
+
 import './App.css';
 
-function App() {
+import BasicLayout from './layout/BasicLayout';
+import NoMenuLayout from './layout/NoMenuLayout';
+
+const noMenuRoute = [
+  '/users', '/login', '/register'
+]
+
+const App: FC = (props: any) => {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Router>
+        {noMenuRoute.indexOf(window.location.pathname) > -1 ?
+          <NoMenuLayout/> : <BasicLayout/>
+        }
+      </Router>
     </div>
   );
 }
